@@ -4,15 +4,18 @@ Tu aplicación tendrá 4 capas:
 - Frontend (HTML, CSS, JavaScript)
 - Interfaz del usuario
 - Carrito, catálogo, login, etc.
+
 - Backend (Node.js + Express)
 - API REST
 - Manejo de sesiones, autenticación, lógica de negocio
 - Validación de datos
+
 - Base de datos (PostgreSQL)
 - Productos
 - Usuarios
 - Órdenes
 - Carrito persistente (opcional)
+
 - Infraestructura (opcional pero recomendado)
 - Docker para backend + base de datos
 - Scripts para levantar todo rápido
@@ -40,6 +43,7 @@ ecommerce/
 
 🛢️ Base de datos PostgreSQL
 Un esquema básico para un e‑commerce:
+
 Tabla users
 
 - id (PK)
@@ -47,19 +51,25 @@ Tabla users
 - email (único)
 - password_hash
 - created_at
+
   Tabla products
+
 - id (PK)
 - name
 - description
 - price
 - stock
 - image_url
+
   Tabla orders
+
 - id (PK)
 - user_id (FK)
 - total
 - created_at
+
   Tabla order_items
+
 - id (PK)
 - order_id (FK)
 - product_id (FK)
@@ -109,13 +119,13 @@ const res = await fetch('http://localhost:3000/products');
 const products = await res.json();
 
 const container = document.getElementById('products');
-container.innerHTML = products.map(p => `    <div class="product">
+container.innerHTML = products.map(p => `   <div class="product">
       <img src="${p.image_url}">
       <h3>${p.name}</h3>
       <p>$${p.price}</p>
       <button onclick="addToCart(${p.id})">Agregar</button>
     </div>
- `).join('');
+`).join('');
 }
 
 loadProducts();
