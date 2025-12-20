@@ -6,6 +6,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.get("/", async (req, res) => {
+  res.send("Hello World!");
+});
+
 app.get("/products", async (req, res) => {
   const result = await pool.query("SELECT * FROM products");
   res.json(result.rows);
