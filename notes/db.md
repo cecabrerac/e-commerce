@@ -92,3 +92,6 @@ Puedo ayudarte a:
 - Crear los endpoints REST para productos, carrito y órdenes
 - Diseñar un flujo de compra completo
   Si quieres, el siguiente paso natural es conectar Node.js a PostgreSQL y crear los primeros endpoints. ¿Quieres avanzar por ahí o prefieres agregar más tablas o funcionalidades a la base de datos?
+
+- Entrar al contenedor de Postgres
+  docker exec -it ecommerce_db_1 psql -U postgres
