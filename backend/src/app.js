@@ -1,18 +1,17 @@
 import express from "express";
 import cors from "cors";
-import { pool } from "./db.js";
+import router from "./routes.js";
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Ruta base
 app.get("/", async (req, res) => {
   res.send("Hello World!");
 });
 
-app.get("/products", async (req, res) => {
-  const result = await pool.query("SELECT * FROM products");
-  res.json(result.rows);
-});
+// usar rutas modulares
+app.use("/", router);
 
 app.listen(3000, () => console.log("API running on port 3000"));
