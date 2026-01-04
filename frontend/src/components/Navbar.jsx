@@ -1,0 +1,33 @@
+import React from "react";
+import { Menubar } from "primereact/menubar";
+import { useNavigate } from "react-router-dom";
+
+function Navbar() {
+  const navigate = useNavigate();
+
+  const items = [
+    {
+      label: "Productos",
+      icon: "pi pi-fw pi-shopping-bag",
+      command: () => navigate("/products"),
+    },
+    {
+      label: "Carrito",
+      icon: "pi pi-fw pi-shopping-cart",
+      command: () => navigate("/cart"),
+    },
+    {
+      label: "Checkout",
+      icon: "pi pi-fw pi-credit-card",
+      command: () => navigate("/checkout"),
+    },
+  ];
+
+  return (
+    <div>
+      <Menubar model={items} />
+    </div>
+  );
+}
+
+export default Navbar;
