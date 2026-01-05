@@ -20,7 +20,7 @@ function Cart({ userId }) {
       <Button
         icon="pi pi-trash"
         label="Eliminar"
-        className="p-button-sm p-button-primary"
+        className="p-button-sm p-button-danger"
         onClick={() => handleRemove(rowData)}
       />
     );

@@ -12,6 +12,11 @@ function Navbar() {
       command: () => navigate("/products"),
     },
     {
+      label: "Catálogo",
+      icon: "pi pi-fw pi-th-large",
+      command: () => navigate("/catalog"),
+    },
+    {
       label: "Carrito",
       icon: "pi pi-fw pi-shopping-cart",
       command: () => navigate("/cart"),
@@ -20,6 +25,11 @@ function Navbar() {
       label: "Checkout",
       icon: "pi pi-fw pi-credit-card",
       command: () => navigate("/checkout"),
+    },
+    {
+      label: "Prueba",
+      icon: "pi pi-fw pi-credit-card",
+      command: () => navigate("/prueba"),
     },
   ];
 
