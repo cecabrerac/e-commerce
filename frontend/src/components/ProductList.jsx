@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Button } from "primereact/button";
+import { useCart } from "../context/useCart";
 
 function ProductList() {
   const [products, setProducts] = useState([]);
+  const { addToCart } = useCart();
 
   // Cargar productos desde tu backend
   useEffect(() => {
@@ -15,21 +17,15 @@ function ProductList() {
   }, []);
 
   // Renderizar columna de acciones
-  const actionBodyTemplate = (rowData) => {
+  const actionBodyTemplate = (products) => {
     return (
       <Button
         icon="pi pi-shopping-cart"
         label="Agregar"
         className="p-button-sm p-button-success"
-        onClick={() => handleAddToCart(rowData)}
+        onClick={() => addToCart(products)}
       />
     );
-  };
-
-  // Ejemplo de acción al agregar al carrito
-  const handleAddToCart = (product) => {
-    console.log("Agregado al carrito:", product);
-    // Aquí podrías hacer un fetch POST a /cart/:userId
   };
 
   return (

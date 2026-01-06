@@ -1,58 +1,94 @@
-import React, { useState } from "react";
-import { InputText } from "primereact/inputtext";
-import { Dropdown } from "primereact/dropdown";
-import { Button } from "primereact/button";
-import { Card } from "primereact/card";
+// import React, { useState } from "react";
+// import { InputText } from "primereact/inputtext";
+// import { Dropdown } from "primereact/dropdown";
+// import { Button } from "primereact/button";
+// import { Card } from "primereact/card";
+
+// function Checkout() {
+//   const [address, setAddress] = useState("");
+//   const [paymentMethod, setPaymentMethod] = useState(null);
+
+//   const paymentOptions = [
+//     { label: "Tarjeta de Crédito", value: "credit" },
+//     { label: "Tarjeta de Débito", value: "debit" },
+//     { label: "PayPal", value: "paypal" },
+//     { label: "Contraentrega", value: "cash" },
+//   ];
+
+//   const handleConfirm = () => {
+//     console.log("Checkout confirmado:", { address, paymentMethod });
+//     alert("¡Pedido confirmado! 🚀");
+//     // Aquí podrías hacer un fetch POST a /checkout con los datos
+//   };
+
+//   return (
+//     <Card title="Checkout" className="p-mt-4">
+//       <div className="p-fluid">
+//         <div className="p-field">
+//           <label htmlFor="address">Dirección de envío</label>
+//           <InputText
+//             id="address"
+//             value={address}
+//             onChange={(e) => setAddress(e.target.value)}
+//             placeholder="Calle 123, Ciudad"
+//           />
+//         </div>
+
+//         <div className="p-field">
+//           <label htmlFor="payment">Método de pago</label>
+//           <Dropdown
+//             id="payment"
+//             value={paymentMethod}
+//             options={paymentOptions}
+//             onChange={(e) => setPaymentMethod(e.value)}
+//             placeholder="Selecciona un método"
+//           />
+//         </div>
+
+//         <Button
+//           label="Confirmar Pedido"
+//           icon="pi pi-check"
+//           className="p-button-success p-mt-3"
+//           onClick={handleConfirm}
+//         />
+//       </div>
+//     </Card>
+//   );
+// }
+
+// export default Checkout;
+
+import React from "react";
+import { useCart } from "../context/useCart";
 
 function Checkout() {
-  const [address, setAddress] = useState("");
-  const [paymentMethod, setPaymentMethod] = useState(null);
-
-  const paymentOptions = [
-    { label: "Tarjeta de Crédito", value: "credit" },
-    { label: "Tarjeta de Débito", value: "debit" },
-    { label: "PayPal", value: "paypal" },
-    { label: "Contraentrega", value: "cash" },
-  ];
-
-  const handleConfirm = () => {
-    console.log("Checkout confirmado:", { address, paymentMethod });
-    alert("¡Pedido confirmado! 🚀");
-    // Aquí podrías hacer un fetch POST a /checkout con los datos
-  };
+  const { cartItems } = useCart();
 
   return (
-    <Card title="Checkout" className="p-mt-4">
-      <div className="p-fluid">
-        <div className="p-field">
-          <label htmlFor="address">Dirección de envío</label>
-          <InputText
-            id="address"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-            placeholder="Calle 123, Ciudad"
-          />
+    <div className="p-4">
+      <h2>Checkout</h2>
+      {cartItems.length === 0 ? (
+        <p>No hay productos para comprar.</p>
+      ) : (
+        <div>
+          <h3>Resumen de compra:</h3>
+          <ul>
+            {cartItems.map((item) => (
+              <li key={item.id}>
+                {item.name} - Cantidad: {item.quantity}
+              </li>
+            ))}
+          </ul>
+          <p>
+            Total: $
+            {cartItems.reduce(
+              (sum, item) => sum + item.price * item.quantity,
+              0
+            )}
+          </p>
         </div>
-
-        <div className="p-field">
-          <label htmlFor="payment">Método de pago</label>
-          <Dropdown
-            id="payment"
-            value={paymentMethod}
-            options={paymentOptions}
-            onChange={(e) => setPaymentMethod(e.value)}
-            placeholder="Selecciona un método"
-          />
-        </div>
-
-        <Button
-          label="Confirmar Pedido"
-          icon="pi pi-check"
-          className="p-button-success p-mt-3"
-          onClick={handleConfirm}
-        />
-      </div>
-    </Card>
+      )}
+    </div>
   );
 }
 

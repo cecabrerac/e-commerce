@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import { Card } from "primereact/card";
 import { Button } from "primereact/button";
 import "./ProductCatalog.css"; // Importa estilos personalizados
+import { useCart } from "../context/useCart";
 
 function ProductCatalog() {
   const [products, setProducts] = useState([]);
+  const { addToCart } = useCart();
 
   useEffect(() => {
     fetch("http://localhost:3000/products")
@@ -26,7 +28,7 @@ function ProductCatalog() {
                 label="Agregar al carrito"
                 icon="pi pi-shopping-cart"
                 className="p-button-rounded p-button-success"
-                onClick={() => console.log("Agregado:", product)}
+                onClick={() => addToCart(product)}
               />
             }
           >

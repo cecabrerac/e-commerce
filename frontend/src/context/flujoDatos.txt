@@ -1,0 +1,41 @@
+                ┌───────────────────────┐
+                │       App.jsx         │
+                │  (envuelve todo con   │
+                │   <CartProvider>)     │
+                └───────────┬───────────┘
+                            │
+                            ▼
+                ┌───────────────────────┐
+                │     CartProvider.jsx  │
+                │  - Estado global:     │
+                │    cartItems[]        │
+                │  - Funciones:         │
+                │    addToCart()        │
+                │    removeFromCart()   │
+                │    clearCart()        │
+                └───────────┬───────────┘
+                            │
+                            ▼
+                ┌───────────────────────┐
+                │     CartContext.js    │
+                │  - Define el contexto │
+                │    (createContext)    │
+                └───────────┬───────────┘
+                            │
+                            ▼
+                ┌───────────────────────┐
+                │      useCart.js       │
+                │  - Hook que usa       │
+                │    useContext()       │
+                │  - Expone acceso a    │
+                │    cartItems y funcs  │
+                └───────────┬───────────┘
+                            │
+        ┌───────────────────┼───────────────────┐
+        ▼                   ▼                   ▼
+┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐
+│ ProductCatalog  │  │      Cart       │  │    Checkout      │
+│ - Usa useCart   │  │ - Usa useCart   │  │ - Usa useCart    │
+│ - Llama         │  │ - Muestra       │  │ - Resume compra  │
+│   addToCart()   │  │   cartItems     │  │   con cartItems  │
+└─────────────────┘  └─────────────────┘  └─────────────────┘
