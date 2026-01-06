@@ -5,7 +5,6 @@ import ProductList from "./components/ProductList";
 import Cart from "./components/Cart";
 import Checkout from "./components/Checkout";
 import ProductCatalog from "./components/ProductCatalog";
-import Prueba from "./components/Prueba";
 
 function App() {
   return (
@@ -17,7 +16,6 @@ function App() {
           <Route path="/cart" element={<Cart userId={1} />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/catalog" element={<ProductCatalog />} />
-          <Route path="/prueba" element={<Prueba />} />
         </Routes>
       </div>
     </Router>

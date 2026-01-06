@@ -26,11 +26,6 @@ function Navbar() {
       icon: "pi pi-fw pi-credit-card",
       command: () => navigate("/checkout"),
     },
-    {
-      label: "Prueba",
-      icon: "pi pi-fw pi-credit-card",
-      command: () => navigate("/prueba"),
-    },
   ];
 
   return (
