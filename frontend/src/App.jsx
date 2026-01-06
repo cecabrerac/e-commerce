@@ -13,9 +13,9 @@ function App() {
       <div className="container">
         <Routes>
           <Route path="/products" element={<ProductList />} />
+          <Route path="/catalog" element={<ProductCatalog />} />
           <Route path="/cart" element={<Cart userId={1} />} />
           <Route path="/checkout" element={<Checkout />} />
-          <Route path="/catalog" element={<ProductCatalog />} />
         </Routes>
       </div>
     </Router>
