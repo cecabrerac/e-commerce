@@ -27,29 +27,85 @@ router.post("/users", async (req, res) => {
 });
 
 // --- Carrito ---
+// Obtener carrito de un usuario
 router.get("/cart/:userId", async (req, res) => {
-  const { userId } = req.params;
-  const result = await pool.query(
-    `SELECT c.id, p.name, p.price, c.quantity
-     FROM cart_items c
-     JOIN products p ON c.product_id = p.id
-     WHERE c.user_id = $1`,
-    [userId]
-  );
-  res.json(result.rows);
+  try {
+    const { userId } = req.params;
+    const result = await pool.query(
+      `SELECT c.id, c.product_id, p.name, p.price, c.quantity
+       FROM cart_items c
+       JOIN products p ON c.product_id = p.id
+       WHERE c.user_id = $1`,
+      [userId]
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error("Error obteniendo carrito:", err);
+    res.status(500).json({ error: "Error obteniendo carrito" });
+  }
 });
 
+// Agregar producto al carrito
 router.post("/cart", async (req, res) => {
-  const { user_id, product_id, quantity } = req.body;
-  const result = await pool.query(
-    `INSERT INTO cart_items (user_id, product_id, quantity)
-     VALUES ($1, $2, $3)
-     ON CONFLICT (user_id, product_id)
-     DO UPDATE SET quantity = cart_items.quantity + EXCLUDED.quantity
-     RETURNING *`,
-    [user_id, product_id, quantity]
-  );
-  res.json(result.rows[0]);
+  try {
+    const { user_id, product_id, quantity } = req.body;
+    await pool.query(
+      `INSERT INTO cart_items (user_id, product_id, quantity)
+       VALUES ($1, $2, $3)
+       ON CONFLICT (user_id, product_id)
+       DO UPDATE SET quantity = cart_items.quantity + EXCLUDED.quantity`,
+      [user_id, product_id, quantity]
+    );
+
+    // devolver carrito actualizado
+    const result = await pool.query(
+      `SELECT c.id, c.product_id, p.name, p.price, c.quantity
+       FROM cart_items c
+       JOIN products p ON c.product_id = p.id
+       WHERE c.user_id = $1`,
+      [user_id]
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error("Error agregando producto:", err);
+    res.status(500).json({ error: "Error agregando producto" });
+  }
+});
+
+// Eliminar producto del carrito
+router.delete("/cart/:userId/:productId", async (req, res) => {
+  try {
+    const { userId, productId } = req.params;
+    await pool.query(
+      `DELETE FROM cart_items WHERE user_id = $1 AND product_id = $2`,
+      [userId, productId]
+    );
+
+    // devolver carrito actualizado
+    const result = await pool.query(
+      `SELECT c.id, c.product_id, p.name, p.price, c.quantity
+       FROM cart_items c
+       JOIN products p ON c.product_id = p.id
+       WHERE c.user_id = $1`,
+      [userId]
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error("Error eliminando producto:", err);
+    res.status(500).json({ error: "Error eliminando producto" });
+  }
+});
+
+// Vaciar carrito
+router.post("/cart/:userId/clear", async (req, res) => {
+  try {
+    const { userId } = req.params;
+    await pool.query(`DELETE FROM cart_items WHERE user_id = $1`, [userId]);
+    res.json([]); // carrito vacío
+  } catch (err) {
+    console.error("Error vaciando carrito:", err);
+    res.status(500).json({ error: "Error vaciando carrito" });
+  }
 });
 
 // --- Órdenes ---
