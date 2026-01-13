@@ -18,7 +18,7 @@ CREATE TABLE products (
 
 CREATE TABLE orders (
     id SERIAL PRIMARY KEY,
-    user_id INT NOT NULL REFERENCES users(id),
+    user_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     total NUMERIC(10,2) NOT NULL,
     status VARCHAR(50) DEFAULT 'pending',
     created_at TIMESTAMP DEFAULT NOW()
@@ -27,7 +27,7 @@ CREATE TABLE orders (
 CREATE TABLE order_items (
     id SERIAL PRIMARY KEY,
     order_id INT NOT NULL REFERENCES orders(id) ON DELETE CASCADE,
-    product_id INT NOT NULL REFERENCES products(id),
+    product_id INT NOT NULL REFERENCES products(id) ON DELETE CASCADE,
     quantity INT NOT NULL,
     price NUMERIC(10,2) NOT NULL
 );
