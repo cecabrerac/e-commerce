@@ -39,7 +39,7 @@ export const processCheckout = async (req, res) => {
 
   try {
     const { user_id, cartItems, shippingAddress, paymentMethod } = req.body;
-
+    console.log("Datos de checkout recibidos:", req.body);
     // Validaciones
     if (!user_id) {
       return res.status(400).json({ error: "User ID es requerido" });
@@ -120,9 +120,11 @@ export const processCheckout = async (req, res) => {
  */
 export const getCheckoutSummary = async (req, res) => {
   try {
-    const { user_id } = req.params;
+    console.log(req.params);
+    const { userId } = req.params;
+    console.log("User ID recibido:", userId);
 
-    if (!user_id) {
+    if (!user_Id) {
       return res.status(400).json({ error: "User ID es requerido" });
     }
 
