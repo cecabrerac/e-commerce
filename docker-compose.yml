@@ -20,6 +20,10 @@ services:
       DB_USER: postgres
       DB_PASS: admin
       DB_NAME: ecommerce
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    command: npm run dev
     depends_on:
       - db
   frontend:

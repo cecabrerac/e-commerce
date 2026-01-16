@@ -2,7 +2,6 @@ import express from "express";
 import {
   processCheckout,
   getCheckoutSummary,
-  validateCoupon,
 } from "../controllers/checkoutController.js";
 
 const router = express.Router();
@@ -18,11 +17,5 @@ router.get("/:userId/summary", getCheckoutSummary);
  * Procesar el checkout y crear la orden
  */
 router.post("/", processCheckout);
-
-/**
- * POST /checkout/validate-coupon
- * Validar un cupón de descuento
- */
-router.post("/validate-coupon", validateCoupon);
 
 export default router;
