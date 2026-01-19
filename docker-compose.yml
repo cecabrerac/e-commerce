@@ -10,7 +10,6 @@ services:
     volumes:
       - ./docker/postgres:/docker-entrypoint-initdb.d
       - db_data:/var/lib/postgresql/data
-
   backend:
     build: ./backend
     ports:

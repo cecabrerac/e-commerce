@@ -34,8 +34,8 @@
         ┌───────────────────┼───────────────────┐
         ▼                   ▼                   ▼
 ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐
-│ ProductCatalog  │  │      Cart       │  │    Checkout      │
-│ - Usa useCart   │  │ - Usa useCart   │  │ - Usa useCart    │
-│ - Llama         │  │ - Muestra       │  │ - Resume compra  │
-│   addToCart()   │  │   cartItems     │  │   con cartItems  │
+│ ProductCatalog │  │      Cart       │  │    Checkout      │
+│ - Usa useCart  │  │ - Usa useCart   │  │ - Usa useCart    │
+│ - Llama        │  │ - Muestra       │  │ - Resume compra  │
+│   addToCart()  │  │   cartItems     │  │   con cartItems  │
 └─────────────────┘  └─────────────────┘  └─────────────────┘

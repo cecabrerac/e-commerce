@@ -6,9 +6,6 @@ function Checkout() {
   const [checkoutSummary, setCheckoutSummary] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [couponCode, setCouponCode] = useState("");
-  const [couponDiscount, setCouponDiscount] = useState(0);
-  const [couponMessage, setCouponMessage] = useState("");
 
   // Formulario de envío y pago
   const [formData, setFormData] = useState({
@@ -16,7 +13,6 @@ function Checkout() {
       street: "",
       city: "",
       state: "",
-      zipCode: "",
       country: "",
     },
     paymentMethod: "credit_card",
@@ -30,7 +26,7 @@ function Checkout() {
       try {
         setLoading(true);
         const response = await fetch(
-          `http://localhost:3000/checkout/${userId}/summary`
+          `http://localhost:3000/checkout/${userId}/summary`,
         );
 
         if (!response.ok) {
@@ -52,43 +48,6 @@ function Checkout() {
       fetchCheckoutSummary();
     }
   }, [userId, cartItems.length]);
-
-  // Validar cupón
-  const handleValidateCoupon = async () => {
-    if (!couponCode.trim()) {
-      setCouponMessage("Ingresa un código de cupón");
-      return;
-    }
-
-    try {
-      const response = await fetch(
-        "http://localhost:3000/checkout/validate-coupon",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            couponCode,
-            totalAmount: checkoutSummary?.total || 0,
-          }),
-        }
-      );
-
-      const data = await response.json();
-
-      if (data.valid) {
-        setCouponDiscount(data.discountAmount);
-        setCouponMessage(
-          `✓ Cupón válido. Descuento: $${data.discountAmount.toFixed(2)}`
-        );
-      } else {
-        setCouponDiscount(0);
-        setCouponMessage(`✗ ${data.error}`);
-      }
-    } catch (err) {
-      setCouponMessage("Error al validar el cupón");
-      console.error("Error:", err);
-    }
-  };
 
   // Actualizar formulario
   const handleFormChange = (e) => {
@@ -131,7 +90,6 @@ function Checkout() {
           })),
           shippingAddress: formData.shippingAddress,
           paymentMethod: formData.paymentMethod,
-          discountApplied: couponDiscount,
         }),
       });
 
@@ -167,9 +125,7 @@ function Checkout() {
     return <div className="p-4">Cargando...</div>;
   }
 
-  const finalTotal = checkoutSummary
-    ? checkoutSummary.total - couponDiscount
-    : 0;
+  const finalTotal = checkoutSummary ? checkoutSummary.total - 0 : 0;
 
   return (
     <div className="p-4 max-w-4xl mx-auto">
@@ -214,47 +170,12 @@ function Checkout() {
                 <span>Envío:</span>
                 <span>${checkoutSummary.shipping.toFixed(2)}</span>
               </div>
-              {couponDiscount > 0 && (
-                <div className="flex justify-between text-green-600 font-semibold">
-                  <span>Descuento:</span>
-                  <span>-${couponDiscount.toFixed(2)}</span>
-                </div>
-              )}
               <div className="flex justify-between font-bold text-lg border-t pt-2">
                 <span>Total:</span>
                 <span>${finalTotal.toFixed(2)}</span>
               </div>
             </div>
           )}
-
-          {/* Cupón de descuento */}
-          <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-            <h4 className="font-semibold mb-2">Código de descuento</h4>
-            <div className="flex gap-2">
-              <input
-                type="text"
-                placeholder="Ingresa tu cupón"
-                value={couponCode}
-                onChange={(e) => setCouponCode(e.target.value)}
-                className="flex-1 px-3 py-2 border rounded"
-              />
-              <button
-                onClick={handleValidateCoupon}
-                disabled={loading}
-                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:bg-gray-400"
-              >
-                Validar
-              </button>
-            </div>
-            {couponMessage && (
-              <p
-                className="text-sm mt-2"
-                style={{ color: couponMessage.includes("✓") ? "green" : "red" }}
-              >
-                {couponMessage}
-              </p>
-            )}
-          </div>
         </div>
 
         {/* Formulario de envío y pago */}
@@ -285,14 +206,6 @@ function Checkout() {
                 name="state"
                 placeholder="Provincia/Estado"
                 value={formData.shippingAddress.state}
-                onChange={handleFormChange}
-                className="w-full px-4 py-2 border rounded"
-              />
-              <input
-                type="text"
-                name="zipCode"
-                placeholder="Código postal"
-                value={formData.shippingAddress.zipCode}
                 onChange={handleFormChange}
                 className="w-full px-4 py-2 border rounded"
               />
