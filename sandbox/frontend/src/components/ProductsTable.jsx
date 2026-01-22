@@ -1,34 +1,35 @@
-import { useEffect, useState } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
+import { Button } from "primereact/button";
 
-function ProductsTable() {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
+function ProductsTable({ products, loading, onDelete }) {
+  const handleDelete = async (id) => {
+    if (!window.confirm("¿Eliminar producto?")) return;
 
-  useEffect(() => {
-    fetch("http://localhost:3000/products")
-      .then((res) => res.json())
-      .then((data) => {
-        setProducts(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error(err);
-        setLoading(false);
-      });
-  }, []);
+    await fetch(`http://localhost:3000/products/${id}`, {
+      method: "DELETE",
+    });
+
+    onDelete(); // recarga desde App
+  };
 
   return (
-    <div className="card">
-      <h2>Productos</h2>
-      <DataTable value={products} loading={loading} paginator rows={5}>
-        <Column field="id" header="ID" />
-        <Column field="name" header="Nombre" />
-        <Column field="price" header="Precio" />
-        <Column field="stock" header="Stock" />
-      </DataTable>
-    </div>
+    <DataTable value={products} loading={loading} paginator rows={5}>
+      <Column field="id" header="ID" />
+      <Column field="name" header="Nombre" />
+      <Column field="price" header="Precio" />
+      <Column field="stock" header="Stock" />
+      <Column
+        header="Acciones"
+        body={(row) => (
+          <Button
+            icon="pi pi-trash"
+            className="p-button-text p-button-danger"
+            onClick={() => handleDelete(row.id)}
+          />
+        )}
+      />
+    </DataTable>
   );
 }
 
